@@ -9,86 +9,7 @@
     <title>Internal Pointer Variable</title>
     <link rel="manifest" href="/manifest.json" />
     <link rel="icon" type="image/x-icon" href="/favicon" />
-    <style>
-      body {
-        background-color: #121212;
-        color: #e0e0e0;
-        font-family: "Arial", sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        margin: 0;
-      }
-
-      a {
-        text-decoration: none;
-      }
-
-      .remote-container {
-        display: grid;
-        grid-template-rows: repeat(5, 1fr);
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-        width: 300px;
-        padding: 20px;
-        background-color: #1f1f1f;
-        border-radius: 15px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-      }
-
-      .button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 18px;
-        background-color: #333;
-        color: #e0e0e0;
-        border: 2px solid #444;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        height: 120px;
-      }
-
-      .button:hover {
-        background-color: #444;
-        border-color: #555;
-      }
-
-      .button:active {
-        background-color: #555;
-        border-color: #666;
-      }
-
-      .button span {
-        font-size: 24px;
-      }
-
-      .wide-button {
-        grid-column: span 3;
-      }
-
-      svg {
-        height: 24px;
-      }
-    </style>
-    <script>
-      async function authenticateAndNavigate(url) {
-        const secretKey = prompt("Enter the secret key:");
-        if (!secretKey) return;
-
-        const response = await fetch(
-          `${url}?key=${encodeURIComponent(secretKey)}`
-        );
-        if (response.ok) {
-          window.location.href = "/";
-        } else {
-          alert("Invalid secret key!");
-        }
-      }
-    </script>
+    <link rel="stylesheet" href="static/style.css">
   </head>
   <body>
     <div class="remote-container">
@@ -119,9 +40,10 @@
           </svg>
         </div>
       </a>
-      <a href="/press/win-m"> </a>
-      <a href="/exec/volume-up"></a>
-
+      <div class="joystick button">
+        <canvas id="joystickCanvas"></canvas>
+      </div>
+      
       <!-- Row 2 -->
       <a href="/exec/volume-down">
         <div class="button">
@@ -410,8 +332,8 @@
       </a>
 
       <!-- Row 5 -->
-      <a href="/exec/refresh">
-        <div class="button">
+      <a href="/press/f5">
+        <div class="button small-button">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -509,11 +431,7 @@
           </svg>
         </div>
       </a>
-
-      <!-- Row 5 -->
-      <!-- <a class="button wide-button" href="javascript:void(0);" onclick="authenticateAndNavigate('/exec/shutdown')">
-        Shutdown
-      </a> -->
     </div>
+    <script src="static/script.js"></script>
   </body>
 </html>
