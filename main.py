@@ -1,19 +1,18 @@
 import time
 import uvicorn
+import logging
+import threading
 import webbrowser
 import subprocess
 from pathlib import Path
-import threading
-import logging
-from typing import Dict, Callable, Optional, List
+from typing import Dict, Callable, Optional
 
 try:
     import pyautogui as pg
     from termcolor import colored
-    from fastapi import FastAPI, HTTPException, Depends, status, Request
+    from fastapi import FastAPI, HTTPException, status, Request
     from fastapi.staticfiles import StaticFiles
     from fastapi.responses import FileResponse, RedirectResponse, JSONResponse
-    from fastapi.security import APIKeyHeader
 except ImportError as e:
     print(f"Missing required dependency: {e}")
     print("Please install required packages: pip install fastapi uvicorn pyautogui termcolor")
@@ -25,11 +24,10 @@ logging.basicConfig(
 )
 logger = logging.getLogger("remote_control")
 
-# Constants
-PORT = 8080
+PORT = 80
 HOST = "0.0.0.0"
 API_KEY_NAME = "X-API-Key"
-DEFAULT_API_KEY = "1234"
+DEFAULT_API_KEY = "2907"
 
 app = FastAPI(
     title="Remote Control API",
@@ -134,6 +132,7 @@ def exec_command(command: str):
         "volume-down": lambda: exec_volume("down"),
         "open-spotify": lambda: exec_open("spotify"),
         "open-youtube": lambda: exec_open("youtube"),
+        "open-camera": lambda: exec_open("camera"),
     }
     
     if command not in command_functions:
@@ -215,6 +214,10 @@ def exec_open(what: str):
         if what in urls:
             webbrowser.open(urls[what])
             logger.info(f"Opened {what} in browser")
+            
+        elif what == "camera":
+            subprocess.run(["start", "microsoft.windows.camera:", "C:\\Windows\\System32\\Camera.exe"], shell=True)
+            
     except Exception as e:
         logger.error(f"Failed to open {what}: {e}")
 
@@ -244,20 +247,15 @@ def get_local_ip() -> Optional[str]:
 
 def main():
     """Main function"""
-    # Get and print IP address
+
     ip_info = get_local_ip()
     if ip_info:
         print(colored(ip_info, "green"), end="\n" * 3)
     else:
         print(colored("Could not determine local IP address", "red"), end="\n" * 3)
     
-    # Show security warning if using default API key
-    # if DEFAULT_API_KEY == "1234":
-    #     print(colored("WARNING: Using default API key. This is insecure!", "yellow"))
-    #     print(colored("Change the DEFAULT_API_KEY value for production use.", "yellow"), end="\n" * 2)
-    
-    # Start server
     print(colored(f"Starting server at http://{HOST}:{PORT}", "blue"))
+
     try:
         uvicorn.run(
             "main:app",
