@@ -16,7 +16,7 @@ Pointer is a web-based remote control application that allows you to control you
 
 ### Prerequisites
 
-- Python 3.7 or higher
+- Python 3.11 or higher
 - pip package manager
 
 ### Setup
@@ -24,7 +24,7 @@ Pointer is a web-based remote control application that allows you to control you
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/yourusername/pointer.git
+   git clone https://github.com/arpy8/pointer.git
    cd pointer
    ```
 
@@ -67,7 +67,7 @@ Pointer is a web-based remote control application that allows you to control you
 
 2. **Connect from client devices**
 
-   - Open your browser and navigate to `http://<your-server-ip>:80`
+   - Open your browser and navigate to `http://localhost`
    - For the best experience on mobile devices, add the app to your home screen
    - Use the touch controls to operate your computer remotely
 
